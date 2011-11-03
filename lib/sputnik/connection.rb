@@ -1,19 +1,29 @@
 module Sputnik
-  constant :DEFAULT_HOST, 'https://api.mongohq.com'
+  DEFAULT_HOST = 'https://api.mongohq.com'
+  
   %{MissingApikeyError InvalidApikeyError InternalServerError NotImplementedError NotFoundError}.each{|const|
     Kernel.const_set const, Class.new(RuntimeError)
   }
 
   class Connection
-    def connection(api_id)
-      conn = Faraday.new(:url => 'http://sushi.com') do |builder|
+    attr_reader :apikey, :base_url
+
+    def initialize(options={})
+      @apikey = options[:apikey]
+      @base_url = options[:base_url] || DEFAULT_HOST
+    end
+
+    def connect
+      conn = Faraday.new(:url => base_url) do |builder|
         builder.request :json
         builder.adapter :net_http
       end
+      conn
     end
 
-    def get(connection, path, params={})
-      response = connection.get do |req|
+    def get(path, params={})
+      params = params.merge({:_apikey => apikey})
+      response = connect.get do |req|
         req.url(path)
         req.params = params
       end
@@ -23,8 +33,9 @@ module Sputnik
       return JSON.parse(response.body) || {}
     end
 
-    def post(connection, path, params={})
-      response = connection.post do |req|
+    def post(path, params={})
+      params = params.merge({:_apikey => apikey})
+      response = connect.post do |req|
         req.url(path)
         req.params = params
         req.header = {'Content-Type' => 'application/json'}
@@ -34,6 +45,8 @@ module Sputnik
 
       return JSON.parse(response.body) || {}
     end
+
+  private
 
     def verify_status!(response)
       case response.status
