@@ -1,18 +1,25 @@
-require "sputnik/version"
-require "sputnik/connection"
-require "sputnik/base"
-require "sputnik/database"
+require 'sputnik/version'
+require 'ostruct'
+require 'json'
+require 'faraday'
+require 'sputnik/connection'
 
 module Sputnik
-  def authenticate(options={})
-    Sputnik.client = Sputnik::Connection.new(options)
-  end
+  class << self
+    def authenticate(options={})
+      Sputnik.client = Sputnik::Connection.new(options)
+    end
 
-  def client
-    Thread.current[:sputnik_client]
-  end
+    def client
+      Thread.current[:sputnik_client]
+    end
 
-  def client=(new_client)
-    Thread.current[:sputnik_client] = new_client
+    def client=(new_client)
+      Thread.current[:sputnik_client] = new_client
+    end
   end
 end
+
+require 'sputnik/base'
+require 'sputnik/database'
+require 'sputnik/database_stats'

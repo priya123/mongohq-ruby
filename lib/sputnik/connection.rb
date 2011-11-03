@@ -1,7 +1,7 @@
 module Sputnik
   DEFAULT_HOST = 'https://api.mongohq.com'
   
-  %{MissingApikeyError InvalidApikeyError InternalServerError NotImplementedError NotFoundError}.each{|const|
+  %w{MissingApikeyError InvalidApikeyError InternalServerError NotImplementedError NotFoundError}.each{|const|
     Kernel.const_set const, Class.new(RuntimeError)
   }
 

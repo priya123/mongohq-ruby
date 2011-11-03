@@ -1,6 +1,6 @@
 module Sputnik
-  class Base
-    def client
+  class Base < OpenStruct
+    def self.client
       Sputnik.client
     end
   end
