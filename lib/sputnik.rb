@@ -21,5 +21,9 @@ module Sputnik
 end
 
 require 'sputnik/base'
+require 'sputnik/plan'
 require 'sputnik/database'
 require 'sputnik/database_stats'
+require 'sputnik/collection'
+require 'sputnik/document'
+require 'sputnik/index'
