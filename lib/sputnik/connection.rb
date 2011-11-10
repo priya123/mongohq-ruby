@@ -25,6 +25,7 @@ module Sputnik
       params = params.merge({:_apikey => apikey})
       response = connect.get do |req|
         req.url(path)
+        req.headers['User-Agent'] = default_header
         req.params = params
       end
 
@@ -38,12 +39,17 @@ module Sputnik
       response = connect.post do |req|
         req.url(path)
         req.params = params
-        req.header = {'Content-Type' => 'application/json'}
+        req.headers['Content-Type'] = 'application/json'
+        req.headers['User-Agent'] = default_header
       end
 
       verify_status!(response)
 
       return JSON.parse(response.body) || {}
+    end
+
+    def default_header
+      "Sputnik/#{VERSION}/ruby"
     end
 
   private
