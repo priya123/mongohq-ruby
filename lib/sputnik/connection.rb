@@ -57,7 +57,7 @@ module Sputnik
     def verify_status!(response)
       case response.status
       when 500
-        raise InternalServerError
+        raise InternalServerError, (JSON.parse(response.body) || {})['error']
       when 501
         raise NotImplementedError
       when 403

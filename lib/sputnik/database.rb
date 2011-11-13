@@ -1,12 +1,7 @@
+# TODO: use command pattern to build an enumerable
+# command that's not called until it's used
 module Sputnik
   class Database < Base
-    def collection
-      raise "Not Yet Implemented"
-      # TODO: call this database's collection
-      # for example, to get a database's collections:
-      # Sputnik::Database.new(:name => 'derp').collection.all
-    end
-
     class << self
       def all
         response = client.get('/databases')
@@ -14,6 +9,7 @@ module Sputnik
         response.each do |item|
           values << Database.new(item)
         end
+        values
       end
 
       def find(database_name)
@@ -27,6 +23,15 @@ module Sputnik
       def delete(database_name)
         client.delete("/databases/#{database_name}", params)
       end
+    end
+
+    # Sputnik::Database.new(:name => 'derp').collection.all
+    def collection
+      Collection.new(:database => self)
+    end
+
+    def stats
+      DatabaseStats.find(db)
     end
   end
 end

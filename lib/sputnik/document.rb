@@ -1,13 +1,13 @@
-# TODO: this has room to be considerably cooler...
 module Sputnik
   class Document < Base
     class << self
-      def all(database_name, collection_name)
-        response = client.get("/databases/#{database_name}/collections/#{collection_name}/documents")
+      def all(database_name, collection_name, params={})
+        response = client.get("/databases/#{database_name}/collections/#{collection_name}/documents", params)
         values = []
         response.each do |item|
           values << Document.new(item)
         end
+        values
       end
 
       def find(database_name, collection_name, document_id)
@@ -25,8 +25,28 @@ module Sputnik
       # TODO: how about a "save" option? I could add it here, but it would be two server hits
 
       def delete(database_name, collection_name, document_id)
-        client.delete("/databases/#{database_name}/collections/#{collection_name}/documents/#{document_id}", params)
+        client.delete("/databases/#{database_name}/collections/#{collection_name}/documents/#{document_id}")
       end
+    end
+
+    def all(params=nil)
+      Document.all(collection.database.db, collection.name, params || self.to_hash)
+    end
+
+    def find(id=nil, params=nil)
+      Document.find(collection.database.db, collection.name, id || self._id, params || self.to_hash)
+    end
+
+    def create(params=nil)
+      Document.create(collection.database.db, collection.name, params || self.to_hash)
+    end
+
+    def update(id=nil, params=nil)
+      Document.update(collection.database.db, collection.name, id || self._id, params || self.to_hash)
+    end
+
+    def delete(id=nil)
+      Document.delete(collection.database.db, collection.name, id || self._id)
     end
   end
 end

@@ -5,13 +5,15 @@ require 'faraday'
 require 'sputnik/connection'
 
 module Sputnik
+  ConnectionNotAuthenticatedError = Class.new(RuntimeError)
+
   class << self
     def authenticate(options={})
       Sputnik.client = Sputnik::Connection.new(options)
     end
 
     def client
-      Thread.current[:sputnik_client]
+      Thread.current[:sputnik_client] || (raise ConnectionNotAuthenticatedError, 'You must first call the authenticate method to connect to MongoHQ.')
     end
 
     def client=(new_client)
