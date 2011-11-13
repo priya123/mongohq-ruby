@@ -26,7 +26,7 @@ module Sputnik
     end
 
     # Sputnik::Database.new(:name => 'derp').collection.all
-    def collection
+    def collections
       Collection.new(:database => self)
     end
 

@@ -6,7 +6,8 @@
 
 Sputnik.authenticate(:apikey => 'derp', :base_url => 'http://localhost:9000')
 
-databases = Sputnik::Database.all
-database =  Sputnik::Database.find('joemo')
-Sputnik::Database.create({'my new derp'})
-Sputnik::Database.delete('joemo')
+    databases = Sputnik::Database.all
+    database =  Sputnik::Database.find('joemo')
+    database.collection.all
+    Sputnik::Database.create({db: 'derp'})
+    Sputnik::Database.delete('derp')

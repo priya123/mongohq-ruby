@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Sputnik::VERSION
   s.authors     = ["coderoshi"]
   s.email       = ["eric.redmond@gmail.com"]
-  s.homepage    = ""
+  s.homepage    = "http://github.com/coderoshi/sputnik"
   s.summary     = %q{Connects to MongoHQ API}
   s.description = %q{Connects to MongoHQ API}
 
