@@ -32,5 +32,13 @@ module Sputnik
     def stats
       DatabaseStats.find(db)
     end
+
+    def to_url
+      "mongo://#{hostname}:#{port}/#{name}"
+    end
+
+    def to_s
+      "#{name} on #{hostname}"
+    end
   end
 end
