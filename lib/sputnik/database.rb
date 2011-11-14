@@ -21,11 +21,10 @@ module Sputnik
       end
 
       def delete(database_name)
-        client.delete("/databases/#{database_name}", params)
+        client.delete("/databases/#{database_name}")
       end
     end
 
-    # Sputnik::Database.new(:name => 'derp').collection.all
     def collections
       Collection.new(:database => self)
     end

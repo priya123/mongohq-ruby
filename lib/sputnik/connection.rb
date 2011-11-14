@@ -1,7 +1,7 @@
 module Sputnik
   DEFAULT_HOST = 'https://api.mongohq.com'
   
-  %w{MissingApikeyError InvalidApikeyError InternalServerError NotImplementedError NotFoundError}.each{|const|
+  %w{MissingApikeyError InvalidApikeyError InternalServerError NotImplementedError NotFoundError ForbiddenError}.each{|const|
     Kernel.const_set const, Class.new(RuntimeError)
   }
 
@@ -48,6 +48,33 @@ module Sputnik
       return JSON.parse(response.body) || {}
     end
 
+    def put(path, params={})
+      params = params.merge({:_apikey => apikey})
+      response = connect.put do |req|
+        req.url(path)
+        req.params = params
+        req.headers['Content-Type'] = 'application/json'
+        req.headers['User-Agent'] = default_header
+      end
+
+      verify_status!(response)
+
+      return JSON.parse(response.body) || {}
+    end
+
+    def delete(path, params={})
+      params = params.merge({:_apikey => apikey})
+      response = connect.delete do |req|
+        req.url(path)
+        req.headers['User-Agent'] = default_header
+        req.params = params
+      end
+
+      verify_status!(response)
+
+      return JSON.parse(response.body) || {}
+    end
+
     def default_header
       "Sputnik/#{VERSION}/ruby"
     end
@@ -61,7 +88,7 @@ module Sputnik
       when 501
         raise NotImplementedError
       when 403
-        raise NotFoundError
+        raise ForbiddenError
       when 404
         raise NotFoundError
       else

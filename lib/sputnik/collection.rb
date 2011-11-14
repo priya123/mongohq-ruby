@@ -41,8 +41,8 @@ module Sputnik
       Collection.create(database.db, params || self.to_hash)
     end
 
-    def update(collection_name=nil, params=nil)
-      Collection.update(database.db, collection_name || self.name, params || self.to_hash)
+    def update(params=nil)
+      Collection.update(database.db, self.name, params || self.to_hash)
     end
 
     def delete(collection_name=nil)
