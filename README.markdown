@@ -4,7 +4,23 @@
 
 ## Using
 
-Sputnik.authenticate(:apikey => 'derp', :base_url => 'http://localhost:9000')
+You can get the most recent stable version through RubyGems.
+
+Install via Bundler/Gemfile
+
+    gem "sputnick", "~> 0.1"
+
+Install gem through command line
+
+    gem install sputnick
+
+To use it, just require rubygems (or not, if you used Bundler) and sputnick, then do stuff.
+
+    require 'rubygems'
+    require 'sputnick'
+
+    # Must first authenticate using your account's API key
+    Sputnik.authenticate(:apikey => 'derp')
 
 	# Get all databases
     databases = Sputnik::Database.all
