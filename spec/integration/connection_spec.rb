@@ -1,20 +1,20 @@
 require 'spec_helper'
-require 'sputnik'
+require 'mongohq'
 
-describe Sputnik::Connection do
+describe MongoHQ::Connection do
   describe "authentication" do
     it "raises an error when uninitialized" do
-      lambda { Sputnik.client }.should raise_exception(Sputnik::ConnectionNotAuthenticatedError)
+      lambda { MongoHQ.client }.should raise_exception(MongoHQ::ConnectionNotAuthenticatedError)
     end
     it "no error when initialized" do
-      Sputnik.authenticate(:apikey => 'derp')
-      lambda { Sputnik.client }.should_not raise_exception(Sputnik::ConnectionNotAuthenticatedError)
+      MongoHQ.authenticate(:apikey => 'derp')
+      lambda { MongoHQ.client }.should_not raise_exception(MongoHQ::ConnectionNotAuthenticatedError)
     end
   end
 
   describe "client" do
     before do
-      Sputnik.authenticate(:apikey => 'derp')
+      MongoHQ.authenticate(:apikey => 'derp')
     end
     [[403, ForbiddenError],
      [404, NotFoundError],
@@ -23,8 +23,8 @@ describe Sputnik::Connection do
     ].each do |code, err|
       it "verify #{code} error" do
         response = Struct.new(:status, :body).new(code, '{"error" : "Error Message"}')
-        Sputnik.client.stub_chain(:connect, :get).and_return(response)
-        lambda { Sputnik.client.get('/') }.should raise_exception(err)
+        MongoHQ.client.stub_chain(:connect, :get).and_return(response)
+        lambda { MongoHQ.client.get('/') }.should raise_exception(err)
       end
     end
   end

@@ -1,4 +1,4 @@
-module Sputnik
+module MongoHQ
   DEFAULT_HOST = 'https://api.mongohq.com'
   
   %w{MissingApikeyError InvalidApikeyError InternalServerError NotImplementedError NotFoundError ForbiddenError}.each{|const|
@@ -76,7 +76,7 @@ module Sputnik
     end
 
     def default_header
-      "Sputnik/#{VERSION}/ruby"
+      "MongoHQ/#{VERSION}/ruby"
     end
 
   private

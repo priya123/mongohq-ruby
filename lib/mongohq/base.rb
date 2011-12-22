@@ -1,7 +1,7 @@
-module Sputnik
+module MongoHQ
   class Base < OpenStruct
     def self.client
-      Sputnik.client
+      MongoHQ.client
     end
   end
 end

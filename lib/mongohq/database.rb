@@ -1,6 +1,6 @@
 # TODO: use command pattern to build an enumerable
 # command that's not called until it's used
-module Sputnik
+module MongoHQ
   class Database < Base
     class << self
       def all

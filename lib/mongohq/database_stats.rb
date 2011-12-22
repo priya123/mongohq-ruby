@@ -1,4 +1,4 @@
-module Sputnik
+module MongoHQ
   class DatabaseStats < Base
     class << self
       def find(database_name)

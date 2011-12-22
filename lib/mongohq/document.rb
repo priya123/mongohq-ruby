@@ -1,4 +1,4 @@
-module Sputnik
+module MongoHQ
   class Document < Base
     class << self
       def all(database_name, collection_name, params={})

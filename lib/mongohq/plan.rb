@@ -1,4 +1,4 @@
-module Sputnik
+module MongoHQ
   class Plan < Base
     class << self
       def all
