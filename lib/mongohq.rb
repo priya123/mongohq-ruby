@@ -1,8 +1,8 @@
-require 'mongohq/version'
+require File.join(File.dirname(__FILE__), 'mongohq/version')
 require 'ostruct'
 require 'json'
 require 'faraday'
-require 'mongohq/connection'
+require File.join(File.dirname(__FILE__), 'mongohq/connection')
 
 module MongoHQ
   ConnectionNotAuthenticatedError = Class.new(RuntimeError)
@@ -22,10 +22,10 @@ module MongoHQ
   end
 end
 
-require 'mongohq/base'
-require 'mongohq/plan'
-require 'mongohq/database'
-require 'mongohq/database_stats'
-require 'mongohq/collection'
-require 'mongohq/document'
-require 'mongohq/index'
+require File.join(File.dirname(__FILE__), 'mongohq/base')
+require File.join(File.dirname(__FILE__), 'mongohq/plan')
+require File.join(File.dirname(__FILE__), 'mongohq/database')
+require File.join(File.dirname(__FILE__), 'mongohq/database_stats')
+require File.join(File.dirname(__FILE__), 'mongohq/collection')
+require File.join(File.dirname(__FILE__), 'mongohq/document')
+require File.join(File.dirname(__FILE__), 'mongohq/index')

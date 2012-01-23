@@ -1,0 +1,26 @@
+#! /usr/bin/env ruby
+
+require 'rubygems'
+require 'thor'
+require File.join(File.dirname(__FILE__), '../lib/mongohq')
+
+class MongohqCLI < Thor
+  desc "info DB_NAME", "Gets info on a database"
+  def info(db_id)
+    init_connection
+    db = MongoHQ::Database.find(db_id)
+    puts "info: #{db.inspect}"
+  end
+
+  private
+
+  def init_connection
+    MongoHQ.authenticate(apikey: get_apikey)
+  end
+
+  def get_apikey
+    File.open(File.join(ENV["HOME"], ".mongohq_apikey"), "r").read.strip
+  end
+end
+
+MongohqCLI.start
