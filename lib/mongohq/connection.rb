@@ -9,7 +9,12 @@ module MongoHQ
     attr_reader :apikey, :base_url
 
     def initialize(options={})
-      @apikey = options[:apikey]
+      if !options[:apikey].nil?
+        @apikey = options[:apikey]
+      elsif !options[:username].nil? && !options[:password].nil?
+        @apikey = MongoHQ::Authenticate.get_apikey(options[:username], options[:password])
+      end
+
       @base_url = options[:base_url] || DEFAULT_HOST
     end
 
@@ -25,7 +30,7 @@ module MongoHQ
       params = params.merge({:_apikey => apikey})
       response = connect.get do |req|
         req.url(path)
-        req.headers['User-Agent'] = default_header
+        req.headers['User-Agent'] = self.class.default_header
         req.params = params
       end
 
@@ -40,7 +45,7 @@ module MongoHQ
         req.url(path)
         req.params = params
         req.headers['Content-Type'] = 'application/json'
-        req.headers['User-Agent'] = default_header
+        req.headers['User-Agent'] = self.class.default_header
       end
 
       verify_status!(response)
@@ -54,7 +59,7 @@ module MongoHQ
         req.url(path)
         req.params = params
         req.headers['Content-Type'] = 'application/json'
-        req.headers['User-Agent'] = default_header
+        req.headers['User-Agent'] = self.class.default_header
       end
 
       verify_status!(response)
@@ -66,7 +71,7 @@ module MongoHQ
       params = params.merge({:_apikey => apikey})
       response = connect.delete do |req|
         req.url(path)
-        req.headers['User-Agent'] = default_header
+        req.headers['User-Agent'] = self.class.default_header
         req.params = params
       end
 
@@ -75,7 +80,7 @@ module MongoHQ
       return JSON.parse(response.body) || {}
     end
 
-    def default_header
+    def self.default_header
       "MongoHQ/#{VERSION}/ruby"
     end
 

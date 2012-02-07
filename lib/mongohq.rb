@@ -6,6 +6,7 @@ require 'mongohq/connection'
 
 module MongoHQ
   ConnectionNotAuthenticatedError = Class.new(RuntimeError)
+  AuthenticationError = Class.new(RuntimeError)
 
   class << self
     def authenticate(options={})
@@ -23,6 +24,7 @@ module MongoHQ
 end
 
 require 'mongohq/base'
+require 'mongohq/authenticate'
 require 'mongohq/plan'
 require 'mongohq/database'
 require 'mongohq/database_stats'
