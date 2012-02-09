@@ -7,6 +7,7 @@ module MongoHQ
         response.each do |item|
           values << Plan.new(item)
         end
+        values
       end
     end
   end
