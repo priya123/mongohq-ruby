@@ -7,7 +7,7 @@ module MongoHQ
         response = client.get("/databases/#{database_name}/stats")
         members = response.delete("members")
         stats = DatabaseStats.new(response)
-        stats.members = members
+        stats.members = members.map { |m| Member.new(m) }
         stats
       end
     end
