@@ -34,7 +34,7 @@ module MongoHQ
     end
 
     def stats_path
-      path = self.host_name.gsub(/[^\.]+[0-9]+\./, "")
+      path = self.hostname.gsub(/[^\.]+[0-9]+\./, "")
       "#{path}:#{port}"
     end
 
