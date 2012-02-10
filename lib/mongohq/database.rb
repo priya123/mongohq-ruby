@@ -30,7 +30,12 @@ module MongoHQ
     end
 
     def stats
-      DatabaseStats.find(db)
+      DatabaseStats.find(self)
+    end
+
+    def stats_path
+      path = self.host_name.gsub(/[^\.]+[0-9]+\./, "")
+      "#{path}:#{port}"
     end
 
     def to_url

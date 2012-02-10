@@ -3,8 +3,14 @@ module MongoHQ
     attr_accessor :members
 
     class << self
-      def find(database_name)
-        response = client.get("/databases/#{database_name}/stats")
+      def find(db_name)
+        if db_name.is_a?(MongoHQ::Database)
+          db = db_name
+        else
+          db = MongoHQ::Database.find(db_name)
+        end
+
+        response = client.get("/databases/#{db.stats_path}/stats")
         members = response.delete("members")
         stats = DatabaseStats.new(response)
         stats.members = members.map { |m| Member.new(m) }
