@@ -44,6 +44,12 @@ module Mhq
       Mhq::Database.new.create(options.plan_slug, options.name)
     end
 
+    desc "destroy [database name]", "Delete a database"
+    def destroy(name)
+      auth_me
+      Mhq::Database.new.destroy(name)
+    end
+
     no_tasks {
       def auth_me
         MongoHQ.authenticate(Mhq::AuthStorage.new.retrieve)
