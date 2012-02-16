@@ -36,6 +36,14 @@ module Mhq
       say "Could not find account with given email and password"
     end
 
+    desc "create", "Deploy a new database"
+    method_option :name, :aliases => '-n'
+    method_option :plan_slug, :aliases => '-p'
+    def create
+      auth_me
+      Mhq::Database.new.create(options.plan_slug, options.name)
+    end
+
     no_tasks {
       def auth_me
         MongoHQ.authenticate(Mhq::AuthStorage.new.retrieve)

@@ -3,7 +3,7 @@ module Mhq
 
     def show(db_name, hostname = nil, continuous = false)
       @db = MongoHQ::Database.find(db_name)
-      if @db.present?
+      if !@db.nil?
         loop_num = 0
         loop do
           write_header if loop_num % 10 == 0
@@ -25,7 +25,7 @@ module Mhq
     def write_stats(stats, hostname_filter = nil)
       wrote_stats = false
       stats.members.each do |member|
-        next if hostname_filter.present? && (member.host.split(/[\.\:]/) - @db.stats_path.split(/[\.\:]/)).join(".") != hostname_filter
+        next if !hostname_filter.nil? && (member.host.split(/[\.\:]/) - @db.stats_path.split(/[\.\:]/)).join(".") != hostname_filter
         wrote_stats = true
         write_stat(member, hostname_filter)
       end
@@ -33,7 +33,7 @@ module Mhq
     end
 
     def write_stat(member, hostname_filter)
-      stats = headers.map { |s| s[2].present? ? format_field(member.send(s[2].to_sym), s[2]) : "" }
+      stats = headers.map { |s| !s[2].nil? ? format_field(member.send(s[2].to_sym), s[2]) : "" }
       say sprintf(headers.map { |s| s[1] }.join(""), *stats) + "\n"
     end
 
