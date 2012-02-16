@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+require "pathname"
+bin_file = Pathname.new(__FILE__).realpath
+
+$:.unshift File.expand_path("../../lib", bin_file)
+
+require 'mhq/cli'
+
+#begin
+  arg_index = ARGV[0] == "help" ? 1 : 0
+  part = ARGV.delete(arg_index)
+  raise ARGV.inspect
+  namespace = eval("Mhq::#{part.capitalize}")
+
+  ARGV[arg_index] = if ARGV[0] != "help" && ARGV[arg_index].nil?
+                      "index"
+                    elsif ARGV[0] != "help"
+                      new_arg
+                    else
+                      ARGV.delete(arg_index)
+                    end
+
+  namespace.start
+#rescue
+#  Mhq::CLI.start
+#end

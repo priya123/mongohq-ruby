@@ -1,15 +1,25 @@
 module Mhq
   class Database < Base
+    default_task :list
 
+    desc "show [database]", "More information on database"
     def show(db_name)
+      auth_me
       db = MongoHQ::Database.find(db_name)
       fields = [:name, :plan, :to_url, :ok, :objects, :avgObjSize, :storageSize, :dataSize, :fileSize, :indexes, :indexSize, :nsSizeMB, :numExtents]
       table db, :vertical => true, :fields => fields
+    rescue Kernel::InternalServerError
+      say "Could not find database named #{db_name}"
+      exit
     end
 
-    def create(plan_slug, name)
-      plan_slug ||= menu(MongoHQ::Plan.all.sort_by(&:price).reverse, :fields => [:slug, :name, :price, :type], :directions => false, :prompt => "Plan Size? ").first.slug
-      name      ||= ask("Database Name: ")
+    desc "create", "Deploy a new database"
+    method_option :name, :aliases => '-n'
+    method_option :plan_slug, :aliases => '-p'
+    def create
+      auth_me
+      plan_slug = options.plan_slug || menu(MongoHQ::Plan.all.sort_by(&:price).reverse, :fields => [:slug, :name, :price, :type], :directions => false, :prompt => "Plan Size? ").first.slug
+      name      = options.name || ask("Database Name: ")
 
       plan_slug = plan_slug.downcase
       available_plans =  MongoHQ::Plan.all.map(&:slug)
@@ -30,7 +40,9 @@ module Mhq
       end
     end
 
+    desc "destroy [database name]", "Delete a database"
     def destroy(name)
+      auth_me
       confirmation = ask("To delete, please type in the full name of the database:")
 
       if name === confirmation && MongoHQ::Database.delete(name)
@@ -40,9 +52,10 @@ module Mhq
       end
     end
 
-    def all
+    desc "list", "List all of my databases"
+    def list
+      auth_me
       table MongoHQ::Database.all.sort_by(&:name), :fields => [:name, :plan]
     end
-
   end
 end
