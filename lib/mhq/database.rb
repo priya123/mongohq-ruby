@@ -11,6 +11,7 @@ module Mhq
       plan_slug ||= menu(MongoHQ::Plan.all.sort_by(&:price).reverse, :fields => [:slug, :name, :price, :type], :directions => false, :prompt => "Plan Size? ").first.slug
       name      ||= ask("Database Name: ")
 
+      plan_slug = plan_slug.downcase
       available_plans =  MongoHQ::Plan.all.map(&:slug)
 
       errors = []

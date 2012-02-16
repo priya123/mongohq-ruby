@@ -11,6 +11,9 @@ module Mhq
         store(email, api_key)
         {:apikey => api_key}
       end
+    rescue MongoHQ::AuthenticationError
+      say "Could not find account with given email and password"
+      exit
     end
 
     def store(email, api_key)

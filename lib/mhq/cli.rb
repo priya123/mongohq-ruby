@@ -27,13 +27,11 @@ module Mhq
       Mhq::Stats.new.show(database_name, options.host, options.tail)
     end
 
-    desc "authenticate", "Setup your mhq authentication"
+    desc "auth", "Setup your mhq authentication"
     method_option :email, :aliases => '-e'
     method_option :password, :aliases => '-p'
-    def authenticate
+    def auth
       Mhq::AuthStorage.new.auth(options.email, options.password)
-    rescue MongoHQ::AuthenticationError
-      say "Could not find account with given email and password"
     end
 
     desc "create", "Deploy a new database"
