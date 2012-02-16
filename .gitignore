@@ -4,3 +4,4 @@ Gemfile.lock
 pkg/*
 .rbenv-vars
 .DS_Store
+.idea

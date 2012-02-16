@@ -5,11 +5,11 @@ require "mongohq/version"
 Gem::Specification.new do |s|
   s.name        = "mongohq"
   s.version     = MongoHQ::VERSION
-  s.authors     = ["coderoshi"]
-  s.email       = ["eric.redmond@gmail.com"]
+  s.authors     = ["coderoshi", "Chris Winslett"]
+  s.email       = ["eric.redmond@gmail.com", "chris@mongohq.com"]
   s.homepage    = "http://github.com/MongoHQ/mongohq-ruby"
-  s.summary     = %q{Connects to MongoHQ API}
-  s.description = %q{Connects to MongoHQ API}
+  s.summary     = %q{Connects to MongoHQ API and MongoHQ CLI}
+  s.description = %q{Connects to MongoHQ API and MongoHQ CLI}
 
   s.rubyforge_project = "mongohq"
 
@@ -18,7 +18,11 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
+  s.add_dependency "thor"
+  s.add_dependency "highline"
+  s.add_dependency "mongohq"
   s.add_dependency "faraday"
+  s.add_dependency "hirb"
   s.add_development_dependency "rspec"
   s.add_development_dependency "fakeweb"
 end
