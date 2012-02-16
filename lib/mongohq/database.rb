@@ -2,6 +2,9 @@
 # command that's not called until it's used
 module MongoHQ
   class Database < Base
+
+    class DbNotFound < RuntimeError; end
+
     class << self
       def all
         response = client.get('/databases')
@@ -14,6 +17,8 @@ module MongoHQ
 
       def find(database_name)
         Database.new(client.get("/databases/#{database_name}"))
+      rescue Kernel::InternalServerError
+        raise DbNotFound
       end
 
       def create(params)

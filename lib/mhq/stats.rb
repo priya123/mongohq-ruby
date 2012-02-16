@@ -12,7 +12,7 @@ module Mhq
       hostname   ||= options.hostname
 
       @db = MongoHQ::Database.find(db_name)
-      if !@db.nil?
+      if !@db.nil? && !@db.shared
         loop_num = 0
         loop do
           write_header if loop_num % 10 == 0
@@ -21,10 +21,12 @@ module Mhq
           loop_num += 1
           sleep 1
         end
-      else
-        say "Could not find database named #{db_name}"
+      elsif
+        say "Stats not available on Sandbox and Micro plans."
       end
-    rescue Interrupt
+    rescue MongoHQ::Database::DbNotFound
+      say "Database named #{db_name} not found"
+      exit
     end
 
     no_tasks {
