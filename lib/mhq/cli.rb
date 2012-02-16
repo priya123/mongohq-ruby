@@ -1,6 +1,7 @@
 require 'thor'
 require 'thor/group'
 require 'mhq'
+require 'time'
 
 module Mhq
   class CLI < Base

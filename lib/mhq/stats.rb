@@ -67,8 +67,7 @@ module Mhq
          ["netIn", '%7s', "network/bytesIn"],
          ["netOut", '%7s', "network/bytesOut"],
          ["conn", '%6s', "connections/current"],
-         ["repl", '%5s'],
-         ["time", '%11s']
+         ["time", '%16s', "currentTime"]
         ]
       end
 
@@ -80,6 +79,8 @@ module Mhq
           human_size(value)
         elsif value.is_a?(Float)
           value.to_i rescue value
+        elsif value.is_a?(String) && value =~ /^[\d]{4}\-[\d]{2}\-[\d]{2}/
+          Time.parse(value).strftime("%m/%d %H:%M:%S")
         else
           value
         end

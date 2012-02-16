@@ -10,7 +10,7 @@ module MongoHQ
       "#{send("globalLock/currentQueue/readers".to_sym)}|#{send("globalLock/currentQueue/writers".to_sym)}"
     end
 
-    def queue_lengths
+    def active_clients
       "#{send("globalLock/activeClients/readers".to_sym)}|#{send("globalLock/activeClients/writers".to_sym)}"
     end
   end
