@@ -38,7 +38,16 @@ module MongoHQ
       DatabaseStats.find(self)
     end
 
-    def stats_path
+    def logs
+      DatabaseLogs.find(self)
+    end
+
+    def users
+      response = client.get('/databases')
+      raise response.inspect
+    end
+
+    def deployment_path
       path = self.hostname.gsub(/[^\.]+[0-9]+\./, "")
       "#{path}:#{port}"
     end

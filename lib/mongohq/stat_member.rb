@@ -1,5 +1,5 @@
 module MongoHQ
-  class Member < Base
+  class StatMember < Base
 
     def index_misses_percentage
       value = send("indexCounters/btree/misses".to_sym) / send("indexCounters/btree/accesses".to_sym)

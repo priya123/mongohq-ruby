@@ -10,10 +10,10 @@ module MongoHQ
           db = MongoHQ::Database.find(db_name)
         end
 
-        response = client.get("/deployments/#{db.stats_path}/stats").first
+        response = client.get("/deployments/#{db.deployment_path}/stats").first
         members = response.delete("members")
         stats = DatabaseStats.new(response)
-        stats.members = members.map { |m| Member.new(m) }
+        stats.members = members.map { |m| StatMember.new(m) }
         stats
       end
     end

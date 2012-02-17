@@ -37,7 +37,7 @@ module Mhq
       def write_stats(stats, hostname_filter = nil)
         wrote_stats = false
         stats.members.each do |member|
-          next if !hostname_filter.nil? && (member.host.split(/[\.\:]/) - @db.stats_path.split(/[\.\:]/)).join(".") != hostname_filter
+          next if !hostname_filter.nil? && (member.host.split(/[\.\:]/) - @db.deployment_path.split(/[\.\:]/)).join(".") != hostname_filter
           wrote_stats = true
           write_stat(member, hostname_filter)
         end
@@ -75,7 +75,7 @@ module Mhq
 
       def format_field(value, header)
         if header == "host"
-          response = (value.split(/[\.\:]/) - @db.stats_path.split(/[\.\:]/)).join(".")
+          response = (value.split(/[\.\:]/) - @db.deployment_path.split(/[\.\:]/)).join(".")
           response == "" ? @db.name.strip : response
         elsif header =~ /^(?:mem|network)/ && (value.is_a?(Integer) || value.is_a?(Float))
           human_size(value)
