@@ -5,7 +5,7 @@ module MongoHQ
         response = client.get("/databases/#{database_name}/collections")
         values = []
         response.each do |item|
-          values << Collection.new({col: item})
+          values << Collection.new(item)
         end
         values
       end

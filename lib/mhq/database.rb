@@ -6,11 +6,18 @@ module Mhq
     def show(db_name)
       auth_me
       db = MongoHQ::Database.find(db_name)
-      fields = [:name, :plan, :to_url, :ok, :objects, :avgObjSize, :storageSize, :dataSize, :fileSize, :indexes, :indexSize, :nsSizeMB, :numExtents]
-      table db, :vertical => true, :fields => fields
+      table db, :vertical => true, :fields => [:name, :plan, :to_url, :ok, :objects, :avgObjSize, :storageSize, :dataSize, :fileSize, :indexes, :indexSize, :nsSizeMB, :numExtents]
     rescue Kernel::InternalServerError
       say "Could not find database named #{db_name}"
       exit
+    end
+
+    desc "collections [database]", "List collections"
+    def collections(db_name)
+      auth_me
+      table MongoHQ::Collection.all(db_name).sort_by(&:name).map { |collection|
+        {name: collection.name, count: collection.count, storageSize: human_size(collection.storageSize), avgObjSize: human_size(collection.avgObjSize), indexCount: collection.indexCount}
+      }, :fields => [:name, :count, :storageSize, :avgObjSize, :indexCount]
     end
 
     desc "create", "Deploy a new database"
