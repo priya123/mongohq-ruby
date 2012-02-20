@@ -43,8 +43,7 @@ module MongoHQ
     end
 
     def users
-      response = client.get('/databases')
-      raise response.inspect
+      DatabaseUsers.find(self)
     end
 
     def deployment_path
