@@ -3,6 +3,10 @@
 require "pathname"
 bin_file = Pathname.new(__FILE__).realpath
 
+module MongoHQ
+  VERSION = "0.5.0-cli"
+end
+
 $:.unshift File.expand_path("../../lib", bin_file)
 
 require 'mhq/cli'
