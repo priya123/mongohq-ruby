@@ -20,7 +20,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency "thor"
   s.add_dependency "highline"
-  s.add_dependency "mongohq"
   s.add_dependency "faraday"
   s.add_dependency "hirb"
   s.add_development_dependency "rspec"
