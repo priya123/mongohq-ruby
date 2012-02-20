@@ -2,22 +2,22 @@ module Mhq
   class Stats < Base
     default_task :show
 
-    desc "stats [database name] [hostname]", "Show stats for database"
+    namespace :stats
+
+    desc "show", "Show stats for database"
+    method_option :db, :aliases => "-d", :desc => "Database name", :type => :string, :required => true
     method_option :tail, :aliases => "-f", :desc => "Tail stats continuously.", :type => :boolean
     method_option :host, :aliases => "-h", :desc => "Hostname to restrict", :type => :string
-    def show(db_name, hostname = nil, continuous = false)
+    def show
       auth_me
 
-      continuous ||= options.tail
-      hostname   ||= options.hostname
-
-      @db = MongoHQ::Database.find(db_name)
+      @db = MongoHQ::Database.find(options.db)
       if !@db.nil? && !@db.shared
         loop_num = 0
         loop do
           write_header if loop_num % 10 == 0
-          write_stats @db.stats, hostname
-          break if !continuous
+          write_stats @db.stats, options.host
+          break if !options.tail
           loop_num += 1
           sleep 1
         end
@@ -25,7 +25,7 @@ module Mhq
         say "Stats not available on Sandbox and Micro plans."
       end
     rescue MongoHQ::Database::DbNotFound
-      say "Database named #{db_name} not found"
+      say "Database named #{options.db} not found"
       exit
     end
 

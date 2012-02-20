@@ -7,6 +7,10 @@ module Mhq
       def auth_me
         MongoHQ.authenticate(Mhq::AuthStorage.new.retrieve)
       end
+
+      def self.banner(task, namespace = true, subcommand = false)
+        "#{basename} #{task.formatted_usage(self, true, subcommand)}"
+      end
     }
   end
 end

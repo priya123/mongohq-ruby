@@ -1,13 +1,17 @@
 module Mhq
-  class Log < Thor
+  class Log < Base
+    default_task :show
+    namespace :logs
 
-    desc "show <database name>", "Show logs for database"
+    desc "show", "logs for database"
+    method_option :db, :aliases => "-d", :desc => "Database name", :type => :string, :required => true
     method_option :host, :aliases => "-h", :desc => "Hostname to restrict", :type => :string
-    def show(database_name, filter_host = nil)
+    def show(filter_host = nil)
+      auth_me
       filter_host ||= options.host
 
       logs = []
-      db = MongoHQ::Database.find(database_name)
+      db = MongoHQ::Database.find(options.db)
       db.logs.members.each do |member|
         host = (member.host.split(/[\.\:]/) - db.deployment_path.split(/[\.\:]/)).join(".")
         host == "" ? db.name.strip : host

@@ -2,6 +2,8 @@ module Mhq
   class Database < Base
     default_task :list
 
+    namespace :dbs
+
     desc "show", "More information on database"
     method_option :db, :aliases => "-d", :desc => "Database name", :type => :string, :required => true
     def show
