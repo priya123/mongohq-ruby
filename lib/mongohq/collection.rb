@@ -11,7 +11,7 @@ module MongoHQ
       end
 
       def find(database_name, collection_name)
-        Collection.new(client.get("/databases/#{database_name}/collections/#{collection_name}"))
+        Collection.new({:name => collection_name}.merge client.get("/databases/#{database_name}/collections/#{collection_name}"))
       end
 
       def create(database_name, params)

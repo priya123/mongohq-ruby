@@ -19,7 +19,7 @@ module Mhq
           latest_log.gsub!(find, replace)
         end
 
-        logs += latest_log.gsub('Feb ', '02-').gsub(/\n([^\ ]+)\ ([^\ ]+)\ ([^\ ]+)\ ([^\ ]+)\ /, "\n\\2 \\3 \\4 #{host} ").split(/\n/)
+        logs += latest_log.gsub(/\n([^\ ]+)\ ([^\ ]+)\ ([^\ ]+)\ ([^\ ]+)\ /, "\n\\2-\\3 \\4 #{host} ").split(/\n/)
       end
       say logs.compact.sort.join("\n")
     end

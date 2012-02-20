@@ -2,20 +2,22 @@ module Mhq
   class Database < Base
     default_task :list
 
-    desc "show [database]", "More information on database"
-    def show(db_name)
+    desc "show", "More information on database"
+    method_option :db, :aliases => "-d", :desc => "Database name", :type => :string, :required => true
+    def show
       auth_me
-      db = MongoHQ::Database.find(db_name)
+      db = MongoHQ::Database.find(options.db)
       table db, :vertical => true, :fields => [:name, :plan, :to_url, :ok, :objects, :avgObjSize, :storageSize, :dataSize, :fileSize, :indexes, :indexSize, :nsSizeMB, :numExtents]
     rescue Kernel::InternalServerError
-      say "Could not find database named #{db_name}"
+      say "Could not find database named #{options.db}"
       exit
     end
 
     desc "collections [database]", "List collections"
-    def collections(db_name)
+    method_option :db, :aliases => "-d", :desc => "Database name", :type => :string, :required => true
+    def collections
       auth_me
-      table MongoHQ::Collection.all(db_name).sort_by(&:name).map { |collection|
+      table MongoHQ::Collection.all(options.db).sort_by(&:name).map { |collection|
         {name: collection.name, count: collection.count, storageSize: human_size(collection.storageSize), avgObjSize: human_size(collection.avgObjSize), indexCount: collection.indexCount}
       }, :fields => [:name, :count, :storageSize, :avgObjSize, :indexCount]
     end
@@ -48,18 +50,20 @@ module Mhq
     end
 
     desc "destroy [database name]", "Delete a database"
-    def destroy(name)
+    method_option :db, :aliases => "-d", :desc => "Database name", :type => :string, :required => true
+    def destroy
       auth_me
       confirmation = ask("To delete, please type in the full name of the database:")
 
-      if name === confirmation && MongoHQ::Database.delete(name)
-        say("Database #{name} has been deleted.")
+      if name === confirmation && MongoHQ::Database.delete(options.db)
+        say("Database #{options.db} has been deleted.")
       else
         say("Confirmation did not match original request -- database was not deleted.")
       end
     end
 
     desc "list", "List all of my databases"
+    method_option :db, :aliases => "-d", :desc => "Database name", :type => :string
     def list
       auth_me
       table MongoHQ::Database.all.sort_by(&:name), :fields => [:name, :plan]

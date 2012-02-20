@@ -1,4 +1,3 @@
-require "mhq/version"
 require "rubygems"
 require "faraday"
 require "mongohq"

@@ -1,10 +1,12 @@
 module Mhq
-  class DbAuth < Thor
+  class DbAuth < Base
     default_task :list
 
     desc "list <database name>", "list database users"
-    def list(db_name)
-      table MongoHQ::Database.users, :fields => [:name]
+    method_option :db, :aliases => "-d", :desc => "Database name", :type => :string, :required => true
+    def list
+      auth_me
+      table MongoHQ::Database.find(options.db).users, :fields => [:user, :readOnly]
     end
 
   end
