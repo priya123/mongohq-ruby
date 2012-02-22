@@ -15,7 +15,7 @@ module Mhq
         {:apikey => api_key}
       end
     rescue MongoHQ::AuthenticationError
-      say "Could not find account with given email and password"
+      say "Could not find account with given email and password; to create an account, go to https://mongohq.com/signup"
       exit
     end
 
