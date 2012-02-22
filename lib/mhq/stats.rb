@@ -62,7 +62,7 @@ module Mhq
          ["vsize", '%7s', "mem/virtual"],
          ["res", '%7s', "mem/resident"],
          ["faults", '%7s', "extra_info/page_faults"],
-         ["locked %", '%9s', "globalLock/ratio"],
+         ["locked %", '%9s', "locked_percentage"],
          ["idx miss %", '%11s', "index_misses_percentage"],
          ["qr|qw", '%10s', "queue_lengths"],
          ["ar|aw", '%8s', "active_clients"],
