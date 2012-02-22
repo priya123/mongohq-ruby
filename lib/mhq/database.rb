@@ -5,18 +5,18 @@ module Mhq
     namespace :dbs
 
     desc "show", "More information on database"
-    method_option :db, :aliases => "-d", :desc => "Database name", :type => :string, :required => true
-    def show
+    method_option :db, :desc => "Database name", :type => :string, :required => true
+    def show(db_name = nil)
       auth_me
-      db = MongoHQ::Database.find(options.db)
+      db = MongoHQ::Database.find(db_name || options.db)
       table db, :vertical => true, :fields => [:name, :plan, :to_url, :ok, :objects, :avgObjSize, :storageSize, :dataSize, :fileSize, :indexes, :indexSize, :nsSizeMB, :numExtents]
     rescue Kernel::InternalServerError
       say "Could not find database named #{options.db}"
       exit
     end
 
-    desc "collections [database]", "List collections"
-    method_option :db, :aliases => "-d", :desc => "Database name", :type => :string, :required => true
+    desc "collections", "List collections"
+    method_option :db, :desc => "Database name", :type => :string, :required => true
     def collections
       auth_me
       table MongoHQ::Collection.all(options.db).sort_by(&:name).map { |collection|
@@ -37,7 +37,7 @@ module Mhq
 
       errors = []
 
-      errors << "  Database name must be alphanumeric with underscores, i.e. =~ /^[A-z0-9\_]+$/" unless name =~ /^[A-z0-9\_]+$/
+      errors << "  Database name must be alphanumeric with underscores or hyphens, i.e. =~ /^[A-z0-9\_\-]+$/" unless name =~ /^[A-z0-9\_\-]+$/
       errors << "  Plan must be one of:\n#{available_plans.map {|p| "   - #{p}" }.join("\n")}" unless available_plans.include?(plan_slug)
 
       say("Errors:") && errors.map { |e| say(e) } && exit unless errors.empty?
@@ -51,13 +51,13 @@ module Mhq
       end
     end
 
-    desc "destroy [database name]", "Delete a database"
-    method_option :db, :aliases => "-d", :desc => "Database name", :type => :string, :required => true
+    desc "destroy", "Delete a database"
+    method_option :db, :desc => "Database name", :type => :string, :required => true
     def destroy
       auth_me
       confirmation = ask("To delete, please type in the full name of the database:")
 
-      if name === confirmation && MongoHQ::Database.delete(options.db)
+      if options.db === confirmation && MongoHQ::Database.delete(options.db)
         say("Database #{options.db} has been deleted.")
       else
         say("Confirmation did not match original request -- database was not deleted.")
@@ -65,7 +65,7 @@ module Mhq
     end
 
     desc "list", "List all of my databases"
-    method_option :db, :aliases => "-d", :desc => "Database name", :type => :string
+    method_option :db, :desc => "Database name", :type => :string
     def list
       auth_me
       table MongoHQ::Database.all.sort_by(&:name), :fields => [:name, :plan]

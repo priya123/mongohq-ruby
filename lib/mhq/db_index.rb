@@ -2,6 +2,8 @@ module Mhq
   class DbIndex < Base
     default_task :list
 
+    namespace :indexes
+
     desc "list", "list indexes for database"
     method_option :db, :required => true
     method_option :collection, :aliases => "-c"

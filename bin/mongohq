@@ -4,11 +4,29 @@ require "pathname"
 bin_file = Pathname.new(__FILE__).realpath
 
 module MongoHQ
-  VERSION = "0.5.0-cli"
+  VERSION_SUFFIX = "-cli"
 end
 
 $:.unshift File.expand_path("../../lib", bin_file)
 
 require 'mhq/cli'
+
+class Thor::Task
+  #
+  # Catching interrupts
+  #
+  def run(instance, args=[])
+    public_method?(instance) ?
+      instance.send(name, *args) : instance.class.handle_no_task_error(name)
+  rescue Interrupt
+    exit
+  rescue ArgumentError => e
+    handle_argument_error?(instance, e, caller) ?
+      instance.class.handle_argument_error(self, e) : (raise e)
+  rescue NoMethodError => e
+    handle_no_method_error?(instance, e, caller) ?
+      instance.class.handle_no_task_error(name) : (raise e)
+  end
+end
 
 Mhq::CLI.start

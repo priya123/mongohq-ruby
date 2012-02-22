@@ -5,11 +5,11 @@ require 'time'
 
 module Mhq
   class CLI < Thor
-    register(Database, 'dbs', 'dbs <command>', 'manage dbs (show, create, destroy)')
-    register(DbAuth, 'dbauth', 'dbauth <command>', 'manage database users (list, create, destroy)')
-    register(DbIndex, 'indexes', 'indexes <command>', 'manage indexes (list, create, destroy)')
+    register(Database, 'dbs', 'dbs <command>', 'manage dbs (create, destroy, help, show)')
+    register(DbAuth, 'dbauth', 'dbauth <command>', 'manage database users (create, destroy, help, list)')
+    register(DbIndex, 'indexes', 'indexes <command>', 'manage indexes (create, destroy, help, list)')
     register(Plan, 'plans', 'plans', 'list available mongohq plans')
-    register(Log, 'logs', 'logs', 'logs for your database')
-    register(Stats, 'stats', 'stats', 'stats for your database')
+    register(Log, 'logs', 'logs', 'logs for your database (help)')
+    register(Stats, 'stats', 'stats', 'stats for your database (help)')
   end
 end

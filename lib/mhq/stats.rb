@@ -5,9 +5,9 @@ module Mhq
     namespace :stats
 
     desc "show", "Show stats for database"
-    method_option :db, :aliases => "-d", :desc => "Database name", :type => :string, :required => true
+    method_option :db, :desc => "Database name", :type => :string, :required => true
     method_option :tail, :aliases => "-f", :desc => "Tail stats continuously.", :type => :boolean
-    method_option :host, :aliases => "-h", :desc => "Hostname to restrict", :type => :string
+    method_option :host, :desc => "Hostname to restrict", :type => :string
     def show
       auth_me
 

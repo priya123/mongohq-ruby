@@ -4,8 +4,8 @@ module Mhq
     namespace :logs
 
     desc "show", "logs for database"
-    method_option :db, :aliases => "-d", :desc => "Database name", :type => :string, :required => true
-    method_option :host, :aliases => "-h", :desc => "Hostname to restrict", :type => :string
+    method_option :db, :desc => "Database name", :type => :string, :required => true
+    method_option :host, :desc => "Hostname to restrict", :type => :string
     def show(filter_host = nil)
       auth_me
       filter_host ||= options.host

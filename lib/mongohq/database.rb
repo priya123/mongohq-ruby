@@ -43,7 +43,15 @@ module MongoHQ
     end
 
     def users
-      DatabaseUsers.find(self)
+      User.all(self.name)
+    end
+
+    def add_user(user, password)
+      User.create(self.name, user, password)
+    end
+
+    def remove_user(user)
+      User.delete(self.name, user)
     end
 
     def deployment_path

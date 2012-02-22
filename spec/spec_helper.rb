@@ -1,0 +1,2 @@
+require 'mongohq'
+require 'fakeweb'
