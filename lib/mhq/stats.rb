@@ -5,9 +5,9 @@ module Mhq
     namespace :stats
 
     desc "show", "Show stats for database"
-    method_option :db, :desc => "Database name", :type => :string, :required => true
+    method_option :db, :aliases => "-d", :desc => "Database name", :type => :string, :required => true
     method_option :tail, :aliases => "-f", :desc => "Tail stats continuously.", :type => :boolean
-    method_option :host, :desc => "Hostname to restrict", :type => :string
+    method_option :host, :aliases => "-h", :desc => "Hostname to restrict", :type => :string
     def show
       auth_me
 
@@ -37,7 +37,7 @@ module Mhq
       def write_stats(stats, hostname_filter = nil)
         wrote_stats = false
         stats.members.each do |member|
-          next if !hostname_filter.nil? && (member.host.split(/[\.\:]/) - @db.deployment_path.split(/[\.\:]/)).join(".") != hostname_filter
+          next if !hostname_filter.nil? && !((member.host.split(/[\.\:]/) - @db.deployment_path.split(/[\.\:]/)).join(".") =~ Regexp.new(hostname_filter))
           wrote_stats = true
           write_stat(member, hostname_filter)
         end
@@ -77,7 +77,9 @@ module Mhq
         if header == "host"
           response = (value.split(/[\.\:]/) - @db.deployment_path.split(/[\.\:]/)).join(".")
           response == "" ? @db.name.strip : response
-        elsif header =~ /^(?:mem|network)/ && (value.is_a?(Integer) || value.is_a?(Float))
+        elsif header =~ /^mem/
+          human_size(value * 1024 * 1024)
+        elsif header =~ /^network/ && (value.is_a?(Integer) || value.is_a?(Float))
           human_size(value)
         elsif value.is_a?(Float)
           value.to_i rescue value
