@@ -1,14 +1,12 @@
 # Простейший Спутник-1
 
-![Спутник](http://www.uwgb.edu/dutchs/Graphics-Geol/Spacecraft/sputnik1.gif)
-
 ## Using
 
 You can get the most recent stable version through RubyGems.
 
 Install via Bundler/Gemfile
 
-    gem "mongohq", "~> 0.3"
+    gem "mongohq", "~> 0.5.0"
 
 Install gem through command line
 
