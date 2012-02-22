@@ -25,8 +25,8 @@ module Mhq
     end
 
     desc "create", "Deploy a new database"
-    method_option :name, :aliases => '-n'
-    method_option :plan_slug, :aliases => '-p'
+    method_option :name
+    method_option :plan_slug
     def create
       auth_me
       plan_slug = options.plan_slug || menu(MongoHQ::Plan.all.sort_by(&:price).reverse, :fields => [:slug, :name, :price, :type], :directions => false, :prompt => "Plan Size? ").first.slug
@@ -49,6 +49,9 @@ module Mhq
       else
         say response.error
       end
+    rescue Interrupt
+      puts "\n"
+      exit 0
     end
 
     desc "destroy", "Delete a database"

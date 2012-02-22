@@ -1,8 +1,8 @@
 module Mhq
-  class DbAuth < Base
+  class User < Base
     default_task :list
 
-    namespace :dbauth
+    namespace :users
 
     desc "list", "list database users"
     method_option :db, :desc => "Database name", :type => :string, :required => true

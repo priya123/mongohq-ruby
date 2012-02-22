@@ -19,7 +19,8 @@ class Thor::Task
     public_method?(instance) ?
       instance.send(name, *args) : instance.class.handle_no_task_error(name)
   rescue Interrupt
-    exit
+    puts "\n"
+    exit 0
   rescue ArgumentError => e
     handle_argument_error?(instance, e, caller) ?
       instance.class.handle_argument_error(self, e) : (raise e)

@@ -4,8 +4,8 @@ require 'highline'
 module Mhq
   class AuthStorage < Base
     desc "auth", "Setup your mhq authentication"
-    method_option :email, :aliases => '-e'
-    method_option :password, :aliases => '-p'
+    method_option :email
+    method_option :password
     def auth
       email ||= options.email || ask("email: ")
       password ||= options.password || HighLine.new.ask("password:  ") { |q| q.echo = "*" }
