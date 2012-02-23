@@ -35,12 +35,13 @@ module Mhq
       end
 
       def write_stats(stats, hostname_filter = nil)
-        wrote_stats = false
+        wrote_stats = 0
         stats.members.each do |member|
           next if !hostname_filter.nil? && !((member.host.split(/[\.\:]/) - @db.deployment_path.split(/[\.\:]/)).join(".") =~ Regexp.new(hostname_filter))
-          wrote_stats = true
+          wrote_stats += 1
           write_stat(member, hostname_filter)
         end
+        puts "" if wrote_stats > 1
         say("No stats for database and host requested") && exit unless wrote_stats
       end
 
