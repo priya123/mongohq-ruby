@@ -76,7 +76,7 @@ module Mhq
 
       def format_field(value, header)
         if header == "host"
-          response = (value.split(/[\.\:]/) - @db.deployment_path.split(/[\.\:]/)).join(".")
+          response = (value.gsub(/:[0-9]+$/, "").split(/[\.\:]/) - @db.deployment_path.split(/[\.\:]/)).join(".")
           response == "" ? @db.name.strip : response
         elsif header =~ /^mem/
           human_size(value * 1024 * 1024)
