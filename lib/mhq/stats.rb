@@ -36,7 +36,7 @@ module Mhq
 
       def write_stats(stats, hostname_filter = nil)
         wrote_stats = 0
-        stats.members.sort_by(&:host).each do |member|
+        stats.members.sort_by{|m| [m.host.match(/\d?(\D*)$/)[1], m.host]}.each do |member|
           next if !hostname_filter.nil? && !((member.host.split(/[\.\:]/) - @db.deployment_path.split(/[\.\:]/)).join(".") =~ Regexp.new(hostname_filter))
           wrote_stats += 1
           write_stat(member, hostname_filter)

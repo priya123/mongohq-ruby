@@ -2,7 +2,9 @@ module MongoHQ
   class StatMember < Base
 
     def index_misses_percentage
-      ((send("indexCounters/btree/misses".to_sym).to_f / send("indexCounters/btree/accesses".to_sym).to_f) * 100).round(1).to_s
+      val = ((send("indexCounters/btree/misses".to_sym).to_f / send("indexCounters/btree/accesses".to_sym).to_f) * 100)
+      val = 0.0 if val.nan?
+      val.round(1).to_s
     end
 
     def queue_lengths
