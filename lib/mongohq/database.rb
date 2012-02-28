@@ -55,8 +55,7 @@ module MongoHQ
     end
 
     def deployment_path
-      path = self.hostname.gsub(/[^\.]+[0-9]+\./, "")
-      "#{path}:#{port}"
+      "#{hostname}:#{port}"
     end
 
     def to_url

@@ -1,3 +1,3 @@
 module MongoHQ
-  VERSION = "0.5.2#{defined?(VERSION_SUFFIX) ? VERSION_SUFFIX : ''}"
+  VERSION = "0.5.3#{defined?(VERSION_SUFFIX) ? VERSION_SUFFIX : ''}"
 end
