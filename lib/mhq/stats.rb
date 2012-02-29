@@ -16,7 +16,11 @@ module Mhq
         loop_num = 0
         loop do
           write_header if loop_num % 10 == 0
-          write_stats @db.stats, options.host
+          begin
+            write_stats @db.stats, options.host
+          rescue Exception => e
+            say "failed to collect stats\n\n"
+          end
           break if !options.tail
           loop_num += 1
           sleep 1
