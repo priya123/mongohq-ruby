@@ -3,6 +3,8 @@
 module MongoHQ
   class Database < Base
 
+    DEPLOYMENT_PATH_REGEX = /(\.?)(node|member|router)\d+[a-z]*\./
+
     class DbNotFound < RuntimeError; end
 
     class << self
@@ -30,6 +32,10 @@ module MongoHQ
       end
     end
 
+    def copy(args)
+      DatabaseCopy.run(:to => self, :from => args[:from])
+    end
+
     def collections
       Collection.new(:database => self)
     end
@@ -55,7 +61,8 @@ module MongoHQ
     end
 
     def deployment_path
-      "#{hostname}:#{port}"
+      path = hostname.sub(DEPLOYMENT_PATH_REGEX, '\1')
+      "#{path}:#{port}"
     end
 
     def to_url
