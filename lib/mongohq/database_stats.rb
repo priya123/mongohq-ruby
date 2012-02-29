@@ -11,7 +11,7 @@ module MongoHQ
         end
 
         response = client.get("/deployments/#{db.deployment_path}/stats").first
-        members = response.delete("members")
+        members = response.delete("members") || []
         stats = DatabaseStats.new(response)
         stats.members = members.map { |m| StatMember.new(m) }
         stats
