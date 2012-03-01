@@ -30,7 +30,7 @@ describe MongoHQ::Database do
       MongoHQ.client.stub!(:delete)
       MongoHQ::Database.delete('cigars')
     end
-  end
 
-  # MongoHQ::Database.new(:name => 'derp').collection.all
+    # MongoHQ::Database.new(:name => 'derp').collection.all
+  end
 end
