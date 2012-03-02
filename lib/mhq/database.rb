@@ -82,10 +82,10 @@ module Mhq
 
       response = MongoHQ::Database.find(options.destination).copy(:from => MongoHQ::Database.find(options.source))
 
-      if response.error.nil?
+      if response.ok == 1
         say "Copy successful."
       else
-        say "Error: #{response.error}"
+        say "Error: #{response.error || response.inspect}"
       end
     end
   end
