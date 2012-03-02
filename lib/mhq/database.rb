@@ -73,5 +73,20 @@ module Mhq
       auth_me
       table MongoHQ::Database.all.sort_by(&:name), :fields => [:name, :plan]
     end
+
+    desc "copy", "Copy data from another database"
+    method_option :destination, :desc => "Destination database", :type => :string, :required => true
+    method_option :source, :desc => "Source database", :type => :string, :required => true
+    def copy
+      auth_me
+
+      response = MongoHQ::Database.find(options.destination).copy(:from => MongoHQ::Database.find(options.source))
+
+      if response.error.nil?
+        say "Copy successful."
+      else
+        say "Error: #{response.error}"
+      end
+    end
   end
 end

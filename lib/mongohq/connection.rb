@@ -1,5 +1,5 @@
 module MongoHQ
-  DEFAULT_HOST = 'https://api.mongohq.com'
+  DEFAULT_HOST = ENV['ROOT_API_ENDPOINT'] || 'https://api.mongohq.com'
   
   %w{MissingApikeyError InvalidApikeyError InternalServerError NotImplementedError NotFoundError ForbiddenError}.each{|const|
     Kernel.const_set const, Class.new(RuntimeError)
