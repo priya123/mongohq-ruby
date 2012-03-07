@@ -20,7 +20,7 @@ module Mhq
     def collections
       auth_me
       table MongoHQ::Collection.all(options.db).sort_by(&:name).map { |collection|
-        {name: collection.name, count: collection.count, storageSize: human_size(collection.storageSize), avgObjSize: human_size(collection.avgObjSize), indexCount: collection.indexCount}
+        {:name => collection.name, :count => collection.count, :storageSize => human_size(collection.storageSize), :avgObjSize => human_size(collection.avgObjSize), :indexCount => collection.indexCount}
       }, :fields => [:name, :count, :storageSize, :avgObjSize, :indexCount]
     end
 

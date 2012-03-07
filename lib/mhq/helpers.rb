@@ -15,3 +15,11 @@ module Mhq
 
   end
 end
+
+if RUBY_VERSION < '1.9'
+  class Float
+    def round(digits)
+      sprintf("%.#{digits}f", self).to_f
+    end
+  end
+end

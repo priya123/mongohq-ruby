@@ -15,7 +15,7 @@ module Mhq
 
       collections.each do |collection|
         MongoHQ::Index.all(options.db, collection.name).each do |index|
-          indexes << {collection: collection.name, key: index.key, unique: index.unique || ""}
+          indexes << {:collection => collection.name, :key => index.key, :unique => index.unique || ""}
         end
       end
 

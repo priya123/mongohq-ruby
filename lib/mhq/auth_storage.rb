@@ -22,7 +22,7 @@ module Mhq
     no_tasks {
       def store(email, api_key)
         Dir.mkdir(config_dir) unless Dir.exists?(config_dir)
-        config = {email: email, apikey: api_key}
+        config = {:email => email, :apikey => api_key}
         File.open(config_file, 'w') { |f| f.write(config.to_yaml) }
       end
 
