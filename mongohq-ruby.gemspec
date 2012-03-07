@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency "highline"
   s.add_dependency "faraday"
   s.add_dependency "hirb"
-  s.add_dependency "json" if RUBY_VERSION < '1.9'
+  s.add_dependency "json"
   s.add_development_dependency "rspec"
   s.add_development_dependency "fakeweb"
   s.add_development_dependency "guard"
